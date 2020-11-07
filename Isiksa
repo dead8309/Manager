@@ -1,0 +1,68 @@
+import importlib
+
+import re
+
+from typing import Optional, List
+
+from telegram import Bot, Update, ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
+
+from telegram.error import Unauthorized, BadRequest, TimedOut, NetworkError, ChatMigrated, TelegramError
+
+from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, Filters
+
+from telegram.ext.dispatcher import run_async, DispatcherHandlerStop
+
+from telegram.utils.helpers import escape_markdown
+
+from Manager import dispatcher, updater, TOKEN, WEBHOOK, OWNER_ID, SUPPORT_CHAT, DONATION_LINK, CERT_PATH, PORT, URL, LOGGER, \
+
+    ALLOW_EXCL
+
+# needed to dynamically load modules
+
+# NOTE: Module order is not guaranteed, specify that in the config file!
+
+from Manager.modules import ALL_MODULES
+
+from Manager.modules.helper_funcs.chat_status import is_user_admin
+
+from Manager.modules.helper_funcs.misc import paginate_modules
+
+PM_START_TEXT = """
+
+Hello {}, my name is {}!
+
+
+
+My owner is [Vaibhav 🇮🇳](t.me/Dead_yt)
+
+Click /help or Help button below to find out more about how to use me to my full potential.
+
+"""
+
+HELP_STRINGS = """
+
+Hey there! My name is *{}*.
+
+
+
+*Main* commands available:
+
+ - /start: start the bot
+
+ - /meet - Command to join Google Meet classes or metting
+
+ - /zoom - Command to join Zoom Meeting
+
+ - /status - Sends screenshot of the web page
+
+ - /restart - Close all the opened window and restarts the script
+
+
+
+
+
+
+
+
+
